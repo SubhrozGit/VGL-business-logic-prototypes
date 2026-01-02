@@ -1,7 +1,9 @@
 Dynamic SQL in VGL
 ---------------------------------------------
 
-Get all the cancelled samples and the count except for site Singapore in an array and return their count
+Get all the cancelled samples and the count except for site Singapore in an array and return their count.
+The below scripts uses dynammic SQL and VGL logic to fetch samples and tests as per business needs. 
+
 --------------------------------------------------------------------------------------------------------------------
 
 ROUTINE GetSample
@@ -82,4 +84,5 @@ Get all the tests associated with cancelled samples in an array and return it.
                     ENDWHILE 
                               RETURN(testArr)
               ENDROUTINE
+
     
