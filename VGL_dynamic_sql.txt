@@ -1,0 +1,85 @@
+Dynamic SQL in VGL
+---------------------------------------------
+
+Get all the cancelled samples and the count except for site Singapore in an array and return their count
+--------------------------------------------------------------------------------------------------------------------
+
+ROUTINE GetSample
+
+DECLARE d_sql
+DECLARE samp_ID
+DECLARE samp_status
+DECLARE counter
+ARRAY sampArr
+
+CREATE obj "STD_DYNAMIC_SQL", d_sql
+
+d_sql.add_to_sql_statement("from sample")
+d_sql.add_to_sql_statement("where status = 'X'")
+d_sql.add_to_sql_statement("and group_id <>'SNG'")
+d_sql.add_to_sql_statement("ORDER BY ID ASC")
+
+d_sql.add_select_field("sample","ID")
+d_sql.add_select_field("sample","status")
+
+d_sql.execute()
+
+counter=0
+
+samp_ID = d_sql.select(1)
+samp_status = d_sql.select(2)
+
+               WHILE(samp_ID <> EMPTY)
+         
+                      Inc(counter)
+                      sampArr[counter] = samp_ID
+                      d_sql.next()
+                      samp_ID = d_sql.select(1)   
+     
+               ENDWHILE 
+         
+                   RETURN (counter)
+
+ENDROUTINE
+
+------------------------------------------------------------------------------------------------
+
+Get all the tests associated with cancelled samples in an array and return it.
+
+
+ ROUTINE GetTests
+ 
+ DECLARE d_sql
+ DECLARE testID
+ DECLARE t_status
+ DECLARE t_counter
+ ARRAY testArr
+
+ CREATE obj "STD_DYNAMIC_SQL", d_sql
+
+ d_sql.add_to_sql_statement( "FROM TEST t,SAMPLE s")
+ d_sql.add_to_sql_statement("where t.ID = s.test_id")
+ d_sql.add_to_sql_statement("and s.status = 'X') 
+ d_sql.add_to_sql_statement("and s.group_id <>'SNG'")
+
+ d_sql.add_select_field("TEST","ID")
+ d_sql.add_select_field("TEST","STATUS")
+
+ d_sql.execute()
+
+ t_counter = 0
+
+ testID = d_sql.select(1)
+ t_status = d_sql.select(2)
+ 
+                     WHILE(testID <> EMPTY)
+         
+                             Inc(t_counter)
+                             testArr[t_counter] = testID
+                             d_sql.next()
+                             testID = d_sql.select(1)   
+     
+                    ENDWHILE 
+                              RETURN(testArr)
+              ENDROUTINE
+    
