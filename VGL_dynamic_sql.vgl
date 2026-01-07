@@ -1,5 +1,14 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Project:       VGL Business Logic Prototypes
+Company:       Thermofisher VGL script
+Author :       Subhradeep Ghosh
+Responsible:   Subhradeep Ghosh
+Intent:        Prototype script to demonstrate dynammic SQL in VGL logic
+Created on:    07-01-2026 (JAN 7 2026)
+Status:        Non-production
 Dynamic SQL in VGL
----------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
 
 Get all the cancelled samples and the count except for site Singapore in an array and return their count.
 The below scripts uses dynammic SQL and VGL logic to fetch samples and tests as per business needs. 
@@ -86,3 +95,4 @@ Get all the tests associated with cancelled samples in an array and return it.
               ENDROUTINE
 
     
+
