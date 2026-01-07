@@ -1,0 +1,50 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Project:       VGL Business Logic Prototypes
+Company:       Thermofisher VGL script
+Author :       Subhradeep Ghosh
+Responsible:   Subhradeep Ghosh
+Intent:        Prototype script to demonstrate DB transactional integrity,row-level locking with rollback safe constraint validation while authorising a Job
+Created on:    07-01-2026 (JAN 7 2026)
+Status:        Non-production
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Authorise a Job using VGL logic, while enforcing DB ACID principles
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ROUTINE AuthoriseJob( VALUE curjob)
+
+DECLARE DBStatus
+DECLARE doTransaction
+DECALRE DBCheck
+DECLARE curmsg
+
+DBStatus = select JobHeader.Job_name FOR UPDATE WHERE job_name = curjob
+IF IsValue(DBStatus) THEN
+   IF (DBStatus <> LOCKED) THEN
+       doTransaction = NOT(transaction_is_write())
+            
+           IF (doTransaction) THEN
+      
+                      START WRITE TRANSACTION "Authorise Job"
+                      ASSIGN job_header.authoriser = "Subhradeep"
+                      WRITE jo_header
+                      ENDIF
+                      COMMIT
+                      curmsg : "Job": TRIM(curjob):"successfully authorized"
+                      WRITE log_file(logfileName,"authoriser", curmsg)
+              
+            IF(transaction_is_write()) THEN
+                      
+                      ROLLBACK
+                      curmsg : "Job": TRIM(curjob):"cannot be authorized at the moment" 
+                      WRITE log_file(logfileName,"cannot authorize", curmsg)  
+            ENDIF
+
+            ELSEIF(DBStatus == LOCKED) THEN
+                      ROLLBACK
+                      curmsg : "Job": TRIM(curjob):"cannot be authorized"
+                      WRITE log_file(logfileName,"LOCK", curmsg)
+            ENDIF
+ENDIF
+ENDROUTINE
