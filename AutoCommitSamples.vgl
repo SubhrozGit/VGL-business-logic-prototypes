@@ -3,8 +3,8 @@ Project:       VGL Business Logic Prototypes
 Company:       Thermofisher VGL script
 Author :       Subhradeep Ghosh
 Responsible:   Subhradeep Ghosh
-Intent:        Prototype script to demonstrate dynammic SQL implementation in VGL logic
-Created on:    07-01-2026 (JAN 7 2026)
+Intent:        Prototype script to demonstrate how auto-commmitting data works with built-in VGL functions
+Created on:    12-04-2025 (4 DEC 2025)
 Status:        Non-production
 -----------------------------------------------------------------------------------------------------------------------------
 This logic will commit all authorised, completed,collected, available and cancelled samples that were logged in before a specified interval.
@@ -98,4 +98,5 @@ background()                                          \\ built-in VGL function, 
                                                          The COMMIT is executed by a separate background routine,preconfigured in the system.
 
         
+
 
