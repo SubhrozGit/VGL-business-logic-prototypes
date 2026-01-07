@@ -1,0 +1,46 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Project:       VGL Business Logic Prototypes
+Company:       Thermofisher VGL script
+Author :       Subhradeep Ghosh
+Responsible:   Subhradeep Ghosh
+Intent:        Prototype script to demonstrate how a LIMS entity is updated at system logic level
+Created on:    07-01-2026 (JAN 7 2026)
+Status:        Non-production
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+VGL logic to implement core LIMS functionality-update sample status
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+JOIN STD_LIBRARY STD_DATABASE                          -- loads std system routines and DB definitions
+ROUTINE SHOW_SAMPLE_ID
+
+DECLARE sample_id  CHARACTER*20
+DECLARE new_status CHARACTER*20
+DECLARE sample_rec RECORD OF SAMPLE                    -- fetch the required row into this record variable
+
+PROMPT FOR sample_id USING "Enter sample ID:"
+PROMPT FOR new_status USING "ENTER new_status:"
+
+           START WRITE TRANSACTION "Update sample status"                  -- begins write transaction
+                       
+                       FIND FIRST sample_rec WHERE
+                     sample_rec.SAMPLE_ID = sample_id
+                       IF NOT EXIST(sample_rec) THEN
+                        DISPLAY "sample not found!"
+
+            ROLLBACK
+             ENDIF   
+          EXIT ROUTINE
+
+ASSIGN sample_rec.status = new_status
+WRITE sample_rec                                                       -- update value write back on DB
+COMMIT
+DISPLAY "sample updated successfully!"
+ENDROUTINE
+
+           
+
+ 
+
+
