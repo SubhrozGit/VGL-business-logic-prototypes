@@ -47,4 +47,5 @@ IF IsValue(DBStatus) THEN
                       WRITE log_file(logfileName,"LOCK", curmsg)
             ENDIF
 ENDIF
+
 ENDROUTINE
